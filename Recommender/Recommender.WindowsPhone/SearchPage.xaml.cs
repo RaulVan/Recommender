@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -250,7 +251,45 @@ namespace Recommender
 
         #endregion
 
+
+
         private async void SearchBoxEventsQuerySubmitted(object sender, RoutedEventArgs e)
+        {
+            //string key = SearchTextBox.Text;
+            //if ((key != null) && !(key.Equals(string.Empty)))
+            //{
+            //    var searchGroup = await ReSearchDataSource.GetSearchGroupAsync("search", key);
+            //    if (searchGroup == null)
+            //    {
+            //        Helpers.InternetFailureAlarm();
+            //    }
+            //    else
+            //    {
+            //        this.DefaultViewModel["SearchItems"] = searchGroup;
+            //    }
+            //}
+            SearchMovie();
+        }
+
+        
+        /// <summary>
+        /// 重写OnKeyUp事件
+        /// </summary>
+        /// <param name="e"></param>
+        protected override async void OnKeyUp(KeyRoutedEventArgs e)
+        {
+            //如果按Enter键，则直接搜索
+            if (e.Key==Windows.System.VirtualKey.Enter)
+            {
+
+                SearchMovie();
+            }
+            //base.OnKeyUp(e);
+        }
+        /// <summary>
+        /// 搜索电影
+        /// </summary>
+        private async void SearchMovie()
         {
             string key = SearchTextBox.Text;
             if ((key != null) && !(key.Equals(string.Empty)))
@@ -265,6 +304,7 @@ namespace Recommender
                     this.DefaultViewModel["SearchItems"] = searchGroup;
                 }
             }
+            this.Focus(FocusState.Programmatic);
         }
     }
 }
